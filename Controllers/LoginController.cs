@@ -37,6 +37,20 @@ namespace LibraryWebApi.Controllers
             return NotFound("User not found");
         }
 
+        [AllowAnonymous]
+        [HttpGet("GetRole")]
+        public IActionResult GetRole()
+        {
+            var role = User?.FindFirstValue(ClaimTypes.Role);
+            if (role != null)
+            {
+                
+                return Ok(role);
+            }
+
+            return NotFound("The token has expired or an invalid request has been sent.");
+        }
+
         private string Generate(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
